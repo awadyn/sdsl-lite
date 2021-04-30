@@ -1,0 +1,58 @@
+CST: num_bytes = 2
+CST: CSA not cached; constructing CSA..
+num_bytes: 2
+block_size = 8388608
+text.size() = 2344
+text.width() = 16
+SA: we should be here..
+Loading from file..
+LOADING.. x.size() = 0
+t_width = 16
+size = 37520, m_width = 16
+LOADING.. x.size() = 2345
+SA: text.size() = 2345
+SA: sa.size() = 2345
+BWT: Constructing BWT..
+confirming t_width = 8
+Loading from file..
+LOADING.. x.size() = 0
+t_width = 16
+size = 37520, m_width = 16
+LOADING.. x.size() = 2345
+BWT: text.size() = 2345
+BWT: text.width() = 16
+CST: CSA is cached..
+CST: LCP not cached; constructing LCP..
+CST: we should be here..
+CST: done constructing LCP..
+LCP: Constructing default LCP..
+f_sca->size() = 0
+Constructing ISA...
+lcp.size() = 0
+Loading from file..
+LOADING.. x.size() = 0
+t_width = 0
+size = 28140, m_width = 12
+LOADING.. x.size() = 2345
+lcp.size() = 2345
+lcp.width() = 12
+Loading from file..
+LOADING.. x.size() = 0
+t_width = 0
+size = 54901, m_width = 1
+t_width = 0
+size = 1216, m_width = 16
+t_width = 0
+size = 888, m_width = 12
+t_width = 0
+size = 444, m_width = 12
+LOADING.. x.size() = 4690
+nodes : 3685
+cst.size() : 4690
+csa.size() : 4690
+suffixes : 2345
+inner nodes : 1340
+root : 0
+id(root) : 4690
+inv_id(root_id) : 0
+degree(root) : 206

@@ -34,8 +34,16 @@ namespace sdsl
 
 template<class int_vector>
 bool contains_no_zero_symbol(const int_vector& text, const std::string& file)
-{
+{ 
+#if 0
+	std::cout << "text.size() = " << text.size() << std::endl;
+	std::cout << "text.width() = " << (int)text.width() << std::endl;
+#endif
+
     for (int_vector_size_type i=0; i < text.size(); ++i) {
+#if 0
+	std::cout << "text[" << i << "] = " << text[i] << std::endl;
+#endif
         if ((uint64_t)0 == text[i]) {
             throw std::logic_error(std::string("Error: File \"")+file+"\" contains zero symbol.");
             return false;
@@ -120,16 +128,24 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
 template<class t_index>
 void construct(t_index& idx, const std::string& file, cache_config& config, uint8_t num_bytes, csa_tag)
 {
+#if 1
+	std::cout << "Constructing CSA: num_bytes = " << (int)num_bytes << std::endl;
+#endif
     auto event = memory_monitor::event("construct CSA");
     const char* KEY_TEXT = key_text_trait<t_index::alphabet_category::WIDTH>::KEY_TEXT;
     const char* KEY_BWT  = key_bwt_trait<t_index::alphabet_category::WIDTH>::KEY_BWT;
+#if 0
     typedef int_vector<t_index::alphabet_category::WIDTH> text_type;
+#else
+    typedef int_vector<16> text_type;
+#endif
     {
         auto event = memory_monitor::event("parse input text");
         // (1) check, if the text is cached
         if (!cache_file_exists(KEY_TEXT, config)) {
             text_type text;
             load_vector_from_file(text, file, num_bytes);
+
             if (contains_no_zero_symbol(text, file)) {
                 append_zero_symbol(text);
                 store_to_cache(text,KEY_TEXT, config);
@@ -233,6 +249,9 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
 template<class t_index>
 void construct(t_index& idx, const std::string& file, cache_config& config, uint8_t num_bytes, cst_tag)
 {
+#if 1
+	std::cout << "Constructing CST: num_bytes = " << (int)num_bytes << std::endl;
+#endif
     auto event = memory_monitor::event("construct CST");
     const char* KEY_TEXT = key_text_trait<t_index::alphabet_category::WIDTH>::KEY_TEXT;
     const char* KEY_BWT  = key_bwt_trait<t_index::alphabet_category::WIDTH>::KEY_BWT;
@@ -242,11 +261,17 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
         typename t_index::csa_type csa;
         if (!cache_file_exists(std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config)) {
             cache_config csa_config(false, config.dir, config.id, config.file_map);
+#if 1
+		std::cout << "CST: CSA not cached; constructing CSA.." << std::endl;
+#endif
             construct(csa, file, csa_config, num_bytes, csa_t);
             auto event = memory_monitor::event("store CSA");
             config.file_map = csa_config.file_map;
             store_to_cache(csa,std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config);
         }
+#if 1
+	std::cout << "CST: CSA is cached.." << std::endl;
+#endif
         register_cache_file(std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config);
     }
     {
@@ -256,6 +281,9 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
         register_cache_file(KEY_BWT, config);
         register_cache_file(conf::KEY_SA, config);
         if (!cache_file_exists(conf::KEY_LCP, config)) {
+#if 1
+		std::cout << "CST: LCP not cached; constructing LCP.." << std::endl;
+#endif
             if (t_index::alphabet_category::WIDTH==8) {
                 construct_lcp_semi_extern_PHI(config);
             } else {
