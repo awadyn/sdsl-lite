@@ -29,6 +29,8 @@
 #include "construct_sa.hpp"
 #include <string>
 
+#define TEST 1
+
 namespace sdsl
 {
 
@@ -128,13 +130,13 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
 template<class t_index>
 void construct(t_index& idx, const std::string& file, cache_config& config, uint8_t num_bytes, csa_tag)
 {
-#if 1
+#ifdef TEST
 	std::cout << "Constructing CSA: num_bytes = " << (int)num_bytes << std::endl;
 #endif
     auto event = memory_monitor::event("construct CSA");
     const char* KEY_TEXT = key_text_trait<t_index::alphabet_category::WIDTH>::KEY_TEXT;
     const char* KEY_BWT  = key_bwt_trait<t_index::alphabet_category::WIDTH>::KEY_BWT;
-#if 0
+#ifndef TEST
     typedef int_vector<t_index::alphabet_category::WIDTH> text_type;
 #else
     typedef int_vector<16> text_type;
@@ -249,7 +251,7 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
 template<class t_index>
 void construct(t_index& idx, const std::string& file, cache_config& config, uint8_t num_bytes, cst_tag)
 {
-#if 1
+#ifdef TEST
 	std::cout << "Constructing CST: num_bytes = " << (int)num_bytes << std::endl;
 #endif
     auto event = memory_monitor::event("construct CST");
@@ -261,7 +263,7 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
         typename t_index::csa_type csa;
         if (!cache_file_exists(std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config)) {
             cache_config csa_config(false, config.dir, config.id, config.file_map);
-#if 1
+#ifdef TEST
 		std::cout << "CST: CSA not cached; constructing CSA.." << std::endl;
 #endif
             construct(csa, file, csa_config, num_bytes, csa_t);
@@ -269,7 +271,7 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
             config.file_map = csa_config.file_map;
             store_to_cache(csa,std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config);
         }
-#if 1
+#ifdef TEST
 	std::cout << "CST: CSA is cached.." << std::endl;
 #endif
         register_cache_file(std::string(conf::KEY_CSA)+"_"+util::class_to_hash(csa), config);
@@ -281,7 +283,7 @@ void construct(t_index& idx, const std::string& file, cache_config& config, uint
         register_cache_file(KEY_BWT, config);
         register_cache_file(conf::KEY_SA, config);
         if (!cache_file_exists(conf::KEY_LCP, config)) {
-#if 1
+#ifdef TEST
 		std::cout << "CST: LCP not cached; constructing LCP.." << std::endl;
 #endif
             if (t_index::alphabet_category::WIDTH==8) {

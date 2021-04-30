@@ -33,6 +33,8 @@
 #include "construct_sa_se.hpp"
 #include "construct_config.hpp"
 
+#define TEST 1
+
 namespace sdsl
 {
 
@@ -145,7 +147,7 @@ void calculate_sa(const unsigned char* c, typename int_vector<fixedIntWidth>::si
 template<uint8_t t_width>
 void construct_sa(cache_config& config)
 {
-#if 1
+#ifdef TEST
 	std::cout << "Constructing SA.." << std::endl;
 #endif
 
@@ -153,20 +155,20 @@ void construct_sa(cache_config& config)
     const char* KEY_TEXT = key_text_trait<t_width>::KEY_TEXT;
     if (t_width == 8) {
         if (construct_config::byte_algo_sa == LIBDIVSUFSORT) {
-#if 0
+#ifndef TEST
             typedef int_vector<t_width> text_type;
 #else
             typedef int_vector<16> text_type;
 #endif
             text_type text;
             load_from_cache(text, KEY_TEXT, config);
-#if 1
+#ifdef TEST
 		std::cout << "SA: text.size() = " << text.size() << std::endl;
 #endif
             // call divsufsort
             int_vector<> sa(text.size(), 0, bits::hi(text.size())+1);
             algorithm::calculate_sa((const unsigned char*)text.data(), text.size(), sa);
-#if 1
+#ifdef TEST
 		std::cout << "SA: sa.size() = " << sa.size() << std::endl;
 #endif
             store_to_cache(sa, conf::KEY_SA, config);
