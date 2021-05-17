@@ -37,13 +37,13 @@ namespace sdsl
 template<class int_vector>
 bool contains_no_zero_symbol(const int_vector& text, const std::string& file)
 { 
-#if 0
+#if 1
 	std::cout << "text.size() = " << text.size() << std::endl;
 	std::cout << "text.width() = " << (int)text.width() << std::endl;
 #endif
 
     for (int_vector_size_type i=0; i < text.size(); ++i) {
-#if 0
+#if 1
 	std::cout << "text[" << i << "] = " << text[i] << std::endl;
 #endif
         if ((uint64_t)0 == text[i]) {
