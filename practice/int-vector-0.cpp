@@ -15,25 +15,38 @@ char line[BUF_SIZE];
 
 
 int main() {
+#if 0
 	// option 1: construct cst using 1-byte tokens
-//	cst_sada<> cst;
-//	cout << "Constructing suffix tree cst.." << endl;
-//	construct(cst, "string.hex", 1);
+	cst_sada<> cst;
+	cout << "Constructing suffix tree cst.." << endl;
+	construct(cst, "string.hex", 1);
+#endif
 
-	// option 2: construct cst using int vector
-//	int_vector<> v;
-//	cout << "Constructing int_vector v.." << endl;
-//	load_vector_from_file(v, "string.hex", 2);
-//	cout << "v.size() = " << v.size() << ", v.width() = " << (int)v.width() << endl;
-//	cst_sada<csa_wt<wt_int<rrr_vector<>>>> cst;
-//	cout << "Constructing suffix tree cst.." << endl;
-//	construct_im(cst, v);
+#if 0
+	// option 2: construct cst using 2-byte tokens
+	cst_sada<> cst;
+	cout << "Constructing suffix tree cst.." << endl;
+	construct(cst, "string.hex", 2);
 
-	// application using tip trace file
+#endif
+
+#if 1
+	// option 3: construct cst using int vector
 	int_vector<> v;
 	cout << "Constructing int_vector v.." << endl;
-	load_vector_from_file(v, "temp.seq.rep", 2);
+	load_vector_from_file(v, "string.hex", 2);
 	cout << "v.size() = " << v.size() << ", v.width() = " << (int)v.width() << endl;
+	cst_sada<csa_wt<wt_int<rrr_vector<>>>> cst;
+	cout << "Constructing suffix tree cst.." << endl;
+	construct_im(cst, v);
+#endif
+
+#if 0
+	// application using tip trace file
+//	int_vector<> v;
+//	cout << "Constructing int_vector v.." << endl;
+//	load_vector_from_file(v, "temp.seq.rep", 2);
+//	cout << "v.size() = " << v.size() << ", v.width() = " << (int)v.width() << endl;
 
 	// here is some magic I don't fully understand: rrr_vector and wt_int
 	// these data structures seem to be necessary for this approach;
@@ -41,6 +54,7 @@ int main() {
 	cst_sada<csa_wt<wt_int<rrr_vector<>>>> cst;
 	cout << "Constructing suffix tree cst.." << endl;
 	construct_im(cst, v);
+#endif
 
 	cout << "cst.size() = " << cst.size() << endl;
 	cout << "cst.nodes() = " << cst.nodes() << endl;
@@ -51,7 +65,7 @@ int main() {
 //
 // uncomment for small tests, but note that it takes a long time 
 // to compute otherwise
-#if 0
+#if 1
         csXprintf(cout, format, cst, '\n');
 #endif
 }
